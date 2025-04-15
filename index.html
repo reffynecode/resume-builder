@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Builder | Botrex.pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .theme-blue {
+            --primary-color: #3b82f6;
+            --secondary-color: #93c5fd;
+            --accent-color: #1d4ed8;
+        }
+        .theme-green {
+            --primary-color: #10b981;
+            --secondary-color: #6ee7b7;
+            --accent-color: #047857;
+        }
+        .theme-purple {
+            --primary-color: #8b5cf6;
+            --secondary-color: #c4b5fd;
+            --accent-color: #6d28d9;
+        }
+        .theme-orange {
+            --primary-color: #f97316;
+            --secondary-color: #fdba74;
+            --accent-color: #c2410c;
+        }
+        .transition-custom {
+            transition: all 0.3s ease;
+        }
+        .resume {
+            min-height: 29.7cm;
+            width: 21cm;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        .sidebar-height {
+            height: calc(100vh - 64px);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+        }
+        .text-primary {
+            color: var(--primary-color);
+        }
+        .border-primary {
+            border-color: var(--primary-color);
+        }
+        .ring-primary {
+            --tw-ring-color: var(--primary-color);
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .resume {
+                box-shadow: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 theme-blue">
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-6 no-print">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="https://www.botrex.pro" class="flex items-center">
+                <h1 class="text-xl font-bold text-primary">Resume<span class="text-gray-700">Builder</span></h1>
+                <div class="text-xs text-gray-500 ml-2 border-l pl-2 border-gray-300">by botrex.pro</div>
+            </a>
+            <div class="flex items-center space-x-4">
+                <button id="saveBtn" class="btn-primary px-4 py-2 rounded-md text-sm font-medium transition-custom flex items-center">
+                    <i class="fas fa-download mr-2"></i> Download PDF
+                </button>
+                <button id="shareBtn" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-custom flex items-center">
+                    <i class="fas fa-share-alt mr-2"></i> Share
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto my-6 flex flex-col lg:flex-row">
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-1/3 bg-white p-5 rounded-lg shadow-sm no-print overflow-y-auto sidebar-height">
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold mb-4 text-gray-800">Choose Theme</h2>
+                <div class="flex space-x-3">
+                    <button class="theme-btn h-8 w-8 rounded-full bg-blue-500 border-2 theme-active" data-theme="blue"></button>
+                    <button class="theme-btn h-8 w-8 rounded-full bg-green-500 border-2 border-transparent" data-theme="green"></button>
+                    <button class="theme-btn h-8 w-8 rounded-full bg-purple-500 border-2 border-transparent" data-theme="purple"></button>
+                    <button class="theme-btn h-8 w-8 rounded-full bg-orange-500 border-2 border-transparent" data-theme="orange"></button>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Personal Info</h2>
+                </div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="fullName" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="John Smith">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+                        <input type="text" id="position" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Software Developer">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input type="tel" id="phone" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="(123) 456-7890">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <input type="text" id="location" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="New York, NY">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Professional Summary</label>
+                        <textarea id="summary" rows="3" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">Passionate software developer with 5+ years of experience in building web applications. Skilled in JavaScript, React, and Node.js with a strong focus on user experience and performance optimization.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6" id="experienceSection">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Work Experience</h2>
+                    <button id="addExperience" class="text-primary hover:text-accent-color">
+                        <i class="fas fa-plus-circle"></i> Add
+                    </button>
+                </div>
+                <div id="experienceContainer">
+                    <div class="experience-item border border-gray-200 rounded-md p-3 mb-3">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                                <input type="text" class="job-title input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Senior Developer">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                                <input type="text" class="company input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Tech Solutions Inc.">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                    <input type="text" class="start-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Jan 2020">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                    <input type="text" class="end-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Present">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <textarea class="description input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" rows="3">• Developed and maintained web applications using React and Node.js
+• Improved application performance by 40% through code optimization
+• Led a team of 3 junior developers on client projects</textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button class="remove-experience text-red-500 hover:text-red-700 text-sm font-medium">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6" id="educationSection">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Education</h2>
+                    <button id="addEducation" class="text-primary hover:text-accent-color">
+                        <i class="fas fa-plus-circle"></i> Add
+                    </button>
+                </div>
+                <div id="educationContainer">
+                    <div class="education-item border border-gray-200 rounded-md p-3 mb-3">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Degree</label>
+                                <input type="text" class="degree input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Bachelor of Science in Computer Science">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Institution</label>
+                                <input type="text" class="institution input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="University of Technology">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                    <input type="text" class="edu-start-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Sep 2014">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                    <input type="text" class="edu-end-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="May 2018">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Details</label>
+                                <textarea class="edu-details input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" rows="2">GPA: 3.8/4.0
+Relevant coursework: Data Structures, Algorithms, Web Development</textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button class="remove-education text-red-500 hover:text-red-700 text-sm font-medium">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Skills</h2>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">List your skills (comma separated)</label>
+                    <textarea id="skills" rows="3" class="input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">JavaScript, React, Node.js, HTML5, CSS3, SQL, MongoDB, Git, Agile, REST APIs, TypeScript, Unit Testing, AWS</textarea>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Resume Preview -->
+        <main class="w-full lg:w-2/3 lg:ml-6 mt-6 lg:mt-0 flex justify-center">
+            <div class="resume bg-white p-8 transition-custom" id="resumePreview">
+                <div class="mb-6 border-b pb-6 border-primary" id="personalPreview">
+                    <h1 id="namePreview" class="text-3xl font-bold text-primary mb-1">John Smith</h1>
+                    <h2 id="positionPreview" class="text-xl text-gray-700 mb-3">Software Developer</h2>
+                    <div class="flex flex-wrap text-sm text-gray-600">
+                        <div class="mr-4 mb-2 flex items-center">
+                            <i class="fas fa-envelope mr-2 text-primary"></i>
+                            <span id="emailPreview">john@example.com</span>
+                        </div>
+                        <div class="mr-4 mb-2 flex items-center">
+                            <i class="fas fa-phone mr-2 text-primary"></i>
+                            <span id="phonePreview">(123) 456-7890</span>
+                        </div>
+                        <div class="mb-2 flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                            <span id="locationPreview">New York, NY</span>
+                        </div>
+                    </div>
+                    <p id="summaryPreview" class="mt-3 text-gray-700">Passionate software developer with 5+ years of experience in building web applications. Skilled in JavaScript, React, and Node.js with a strong focus on user experience and performance optimization.</p>
+                </div>
+
+                <div class="mb-6" id="experiencePreview">
+                    <h2 class="text-xl font-semibold text-primary mb-3 border-b border-gray-200 pb-1">Work Experience</h2>
+                    <div class="experience-preview-item mb-4">
+                        <div class="flex justify-between">
+                            <h3 class="font-semibold">Senior Developer</h3>
+                            <span class="text-sm text-gray-600">Jan 2020 - Present</span>
+                        </div>
+                        <div class="text-gray-700 mb-1">Tech Solutions Inc.</div>
+                        <div class="text-sm text-gray-600">
+                            • Developed and maintained web applications using React and Node.js<br>
+                            • Improved application performance by 40% through code optimization<br>
+                            • Led a team of 3 junior developers on client projects
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6" id="educationPreview">
+                    <h2 class="text-xl font-semibold text-primary mb-3 border-b border-gray-200 pb-1">Education</h2>
+                    <div class="education-preview-item mb-4">
+                        <div class="flex justify-between">
+                            <h3 class="font-semibold">Bachelor of Science in Computer Science</h3>
+                            <span class="text-sm text-gray-600">Sep 2014 - May 2018</span>
+                        </div>
+                        <div class="text-gray-700 mb-1">University of Technology</div>
+                        <div class="text-sm text-gray-600">
+                            GPA: 3.8/4.0<br>
+                            Relevant coursework: Data Structures, Algorithms, Web Development
+                        </div>
+                    </div>
+                </div>
+
+                <div id="skillsPreview">
+                    <h2 class="text-xl font-semibold text-primary mb-3 border-b border-gray-200 pb-1">Skills</h2>
+                    <div class="flex flex-wrap" id="skillsList">
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">JavaScript</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">React</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">Node.js</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">HTML5</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">CSS3</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">SQL</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">MongoDB</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">Git</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">Agile</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">REST APIs</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">TypeScript</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">Unit Testing</span>
+                        <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2">AWS</span>
+                    </div>
+                </div>
+
+                <div class="text-center text-gray-500 text-xs mt-8">
+                    <p>Built with <a href="https://www.botrex.pro" class="text-primary hover:underline">www.botrex.pro</a></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Share Your Resume</h3>
+                <button id="closeShareModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="mb-4 text-gray-600">Share this link with others:</p>
+            <div class="flex mb-4">
+                <input id="shareLink" type="text" value="https://www.botrex.pro/resume/shared-resume-123" class="flex-grow px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary" readonly>
+                <button id="copyLink" class="btn-primary px-4 py-2 rounded-r-md">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-custom">
+                    <i class="fab fa-facebook-f mr-2"></i> Facebook
+                </button>
+                <button class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-md transition-custom">
+                    <i class="fab fa-twitter mr-2"></i> Twitter
+                </button>
+                <button class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition-custom">
+                    <i class="fab fa-linkedin-in mr-2"></i> LinkedIn
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg transform translate-y-16 opacity-0 transition-all duration-300">
+        <span id="notificationText">Operation successful!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme switching
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    document.body.className = 'bg-gray-100';
+                    document.body.classList.add(`theme-${theme}`);
+                    
+                    // Update active button
+                    themeButtons.forEach(btn => btn.classList.remove('border-white', 'theme-active'));
+                    this.classList.add('border-white', 'theme-active');
+                    
+                    showNotification(`Theme updated to ${theme}`);
+                });
+            });
+
+            // Personal info updates
+            const personalFields = [
+                {input: '#fullName', preview: '#namePreview'},
+                {input: '#position', preview: '#positionPreview'},
+                {input: '#email', preview: '#emailPreview'},
+                {input: '#phone', preview: '#phonePreview'},
+                {input: '#location', preview: '#locationPreview'},
+                {input: '#summary', preview: '#summaryPreview'}
+            ];
+
+            personalFields.forEach(field => {
+                document.querySelector(field.input).addEventListener('input', function() {
+                    document.querySelector(field.preview).textContent = this.value;
+                });
+            });
+
+            // Experience section
+            function updateExperiencePreview() {
+                const previewContainer = document.getElementById('experiencePreview');
+                // Clear existing preview except the heading
+                while (previewContainer.children.length > 1) {
+                    previewContainer.removeChild(previewContainer.lastChild);
+                }
+
+                // Add each experience item to preview
+                document.querySelectorAll('.experience-item').forEach(item => {
+                    const jobTitle = item.querySelector('.job-title').value;
+                    const company = item.querySelector('.company').value;
+                    const startDate = item.querySelector('.start-date').value;
+                    const endDate = item.querySelector('.end-date').value;
+                    const description = item.querySelector('.description').value;
+
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'experience-preview-item mb-4';
+                    previewItem.innerHTML = `
+                        <div class="flex justify-between">
+                            <h3 class="font-semibold">${jobTitle}</h3>
+                            <span class="text-sm text-gray-600">${startDate} - ${endDate}</span>
+                        </div>
+                        <div class="text-gray-700 mb-1">${company}</div>
+                        <div class="text-sm text-gray-600">${description.replace(/\n/g, '<br>')}</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                });
+            }
+
+            // Add new experience
+            document.getElementById('addExperience').addEventListener('click', function() {
+                const container = document.getElementById('experienceContainer');
+                const newItem = document.createElement('div');
+                newItem.className = 'experience-item border border-gray-200 rounded-md p-3 mb-3';
+                newItem.innerHTML = `
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                            <input type="text" class="job-title input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Job Title">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                            <input type="text" class="company input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Company Name">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                <input type="text" class="start-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Jan 2020">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                <input type="text" class="end-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Present">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea class="description input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" rows="3">• Responsibility 1
+• Responsibility 2
+• Achievement</textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="remove-experience text-red-500 hover:text-red-700 text-sm font-medium">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(newItem);
+                setupExperienceListeners(newItem);
+                updateExperiencePreview();
+                showNotification("Experience section added");
+            });
+
+            // Setup experience listeners
+            function setupExperienceListeners(item) {
+                const inputs = item.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateExperiencePreview);
+                });
+
+                const removeBtn = item.querySelector('.remove-experience');
+                removeBtn.addEventListener('click', function() {
+                    item.remove();
+                    updateExperiencePreview();
+                    showNotification("Experience section removed");
+                });
+            }
+
+            // Initialize experience listeners
+            document.querySelectorAll('.experience-item').forEach(setupExperienceListeners);
+
+            // Education section
+            function updateEducationPreview() {
+                const previewContainer = document.getElementById('educationPreview');
+                // Clear existing preview except the heading
+                while (previewContainer.children.length > 1) {
+                    previewContainer.removeChild(previewContainer.lastChild);
+                }
+
+                // Add each education item to preview
+                document.querySelectorAll('.education-item').forEach(item => {
+                    const degree = item.querySelector('.degree').value;
+                    const institution = item.querySelector('.institution').value;
+                    const startDate = item.querySelector('.edu-start-date').value;
+                    const endDate = item.querySelector('.edu-end-date').value;
+                    const details = item.querySelector('.edu-details').value;
+
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'education-preview-item mb-4';
+                    previewItem.innerHTML = `
+                        <div class="flex justify-between">
+                            <h3 class="font-semibold">${degree}</h3>
+                            <span class="text-sm text-gray-600">${startDate} - ${endDate}</span>
+                        </div>
+                        <div class="text-gray-700 mb-1">${institution}</div>
+                        <div class="text-sm text-gray-600">${details.replace(/\n/g, '<br>')}</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                });
+            }
+
+            // Add new education
+            document.getElementById('addEducation').addEventListener('click', function() {
+                const container = document.getElementById('educationContainer');
+                const newItem = document.createElement('div');
+                newItem.className = 'education-item border border-gray-200 rounded-md p-3 mb-3';
+                newItem.innerHTML = `
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Degree</label>
+                            <input type="text" class="degree input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Degree/Certification">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Institution</label>
+                            <input type="text" class="institution input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Institution Name">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                <input type="text" class="edu-start-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="Sep 2016">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                <input type="text" class="edu-end-date input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" value="May 2020">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Details</label>
+                            <textarea class="edu-details input-field w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" rows="2">GPA, relevant coursework, achievements, etc.</textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="remove-education text-red-500 hover:text-red-700 text-sm font-medium">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(newItem);
+                setupEducationListeners(newItem);
+                updateEducationPreview();
+                showNotification("Education section added");
+            });
+
+            // Setup education listeners
+            function setupEducationListeners(item) {
+                const inputs = item.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateEducationPreview);
+                });
+
+                const removeBtn = item.querySelector('.remove-education');
+                removeBtn.addEventListener('click', function() {
+                    item.remove();
+                    updateEducationPreview();
+                    showNotification("Education section removed");
+                });
+            }
+
+            // Initialize education listeners
+            document.querySelectorAll('.education-item').forEach(setupEducationListeners);
+
+            // Skills section
+            document.getElementById('skills').addEventListener('input', function() {
+                const skillsContainer = document.getElementById('skillsList');
+                skillsContainer.innerHTML = '';
+                
+                const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+                skills.forEach(skill => {
+                    const skillSpan = document.createElement('span');
+                    skillSpan.className = 'bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm mr-2 mb-2';
+                    skillSpan.textContent = skill;
+                    skillsContainer.appendChild(skillSpan);
+                });
+            });
+
+            // PDF Download
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                const element = document.getElementById('resumePreview');
+                const options = {
+                    margin: [0, 0, 0, 0],
+                    filename: 'resume.pdf',
+                    image: { type: 'jpeg', quality: 1 },
+                    html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                // Add saving class to show we're processing
+                element.classList.add('opacity-50');
+                showNotification("Generating PDF...");
+                
+                html2pdf().set(options).from(element).save().then(() => {
+                    element.classList.remove('opacity-50');
+                    showNotification("PDF successfully downloaded!");
+                });
+            });
+
+            // Share modal
+            const shareModal = document.getElementById('shareModal');
+            const shareBtn = document.getElementById('shareBtn');
+            const closeShareModal = document.getElementById('closeShareModal');
+            const shareLink = document.getElementById('shareLink');
+            const copyLink = document.getElementById('copyLink');
+
+            shareBtn.addEventListener('click', function() {
+                shareModal.classList.remove('hidden');
+                shareLink.value = `https://www.botrex.pro/resume/shared-${Date.now().toString(36)}`;
+            });
+
+            closeShareModal.addEventListener('click', function() {
+                shareModal.classList.add('hidden');
+            });
+
+            copyLink.addEventListener('click', function() {
+                shareLink.select();
+                document.execCommand('copy');
+                showNotification("Link copied to clipboard!");
+            });
+
+            // Click outside to close modal
+            window.addEventListener('click', function(event) {
+                if (event.target === shareModal) {
+                    shareModal.classList.add('hidden');
+                }
+            });
+
+            // Notification system
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                notificationText.textContent = message;
+                notification.classList.remove('translate-y-16', 'opacity-0');
+                
+                setTimeout(() => {
+                    notification.classList.add('translate-y-16', 'opacity-0');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
